@@ -1,0 +1,22 @@
+language: go
+go:
+- 1.8
+services:
+- docker
+install:
+- go get -u -v github.com/Masterminds/glide
+script:
+- "./build.sh"
+env:
+  global:
+  - secure: Tl9l0YqtLFU8eVWvLO1jxU6178BYC0kg8Cf17DE3lvqZNa5olRF8qKsSN/tpBPRRcWw4B3M79wsFXXC7tJDFCmxcN/gquq7ZsOpLUIPJxAAIYdn+ICKMHKyLLbmQbCnu4Fbli5dHCGHuA6vNncZ6z6Kp5VmB6jiVYD5F1styqnn4J2K4ybJr1j9BKzqFZEYl9aVpwo0iKJ9ce0nB4zi2EoXnv2RKPdyFzbaQh1ip5SxMb0h4CzJ6E3jov8CuMkHI2q7HQ95FzIrNvYUC2aGnBClYjkkh+KcrLNdtEF9zlHvXQVbvRLURJGGOQGNINxVfL+MueyeK2OyLXZTBaJATsMaegrr2pFkTyYAK2yoq8WuWlMvlHCcSV3Y7xBaXJJIkzNmf+9V7BcJsJuYm6g4oQ2hEwQTSQSmGWJmIjHg/g1RvwGlOXeGVnd31SmjmNCPeaWNn8DmubKVJUN2FZQwjB+LRHAL7aiLXHON6LvT6JOHQK4Bpo/t3iuHYOoj8Jl7X4OUCQrH/aqQVYf9rhNnIhiWfbvyovkKTQq1/68Kulg3lceazRUWggC5T35cx/+7mrXFbnis1NehGr7bBbeqRkKnpvYza53O17nCnjof+4XXreLiDdLSzJ8ns3I4ph0vh6gHhokydiAhBWKL2VatfKRMDETgkn4Kzu/+lMBw5+2k=
+  - secure: raB9aVwdCttlq2IQ6IgIFWKJQN21QVOmR0BBo6wMmNVl5lk226Vmoc7P5uSTAJEIFbleqk24Wzat/EvZ5IucUwI1PSGqd4HrpV9dxTGAFXMZAhsvoV45kcr6dSOqEhoWJHmy8frcseRhjMAKOPfoHv+JsM7QL4YX+fK9cjfXA7ajg4DVtgz9nAoRE2rrgSZDFv2A9R0DNugNPINwP63f2DPq2RD0jFOPkCkBsickOOF780oFpzk5jLZHO+wjuH2ABJl99t3iCYhFBBwNtBXkZ4uh5gB4SKmgkgTlhupA2N9iF+EeJ+5ygwP7Q2bbO26juiIqDeCJYu2FJq4whmJR2n/i6liHbzhYPUOBz1+9qxx+6R5mQgJGaZfSjJGpbZgHADUVVp0q0csZPHZV2iJKaq2auHuP5VgJq+qOVZ3nFiVJVMWiobEjL6C1eTMYrH+8+CR2JChXbJhJspNj3z6/AJH2kDHPsNS8ZR6tmhOT1yPEt+5sGNyDk6kCb/FAhbAmBxtOaKfCxPW43dSH1NWPsipbcK3mOh9oc5FRhntGLp6fhwuXPSF3q1I/JixWYcJk5xt3yEtvG1+ZUtLtDuPprsVpz0DuKkCGxPXYxWv4RZEZB7o4HO1cuhtE7JtnUp8YKgfSQ9m5FOcCT61bT8dPdu+KWGYhi1QThUcFa4YoKJc=
+  - secure: 4jAka52PaFr+g6V6+rgMyBKrv8tLbbBJ8peXPY4EK7w1Wy3/54YXDGOk+lQtmw4NPYWMypsqWS8ZpFuu3qc29LyPgUXO2HFT/+c33semD9KcvquzPmFPcx1C81uoKyWLFBWFPoteoqYeUaveJd7WlYjqaKcUGiJVO+ZRJRibbKDD87tHOYWivOXfOB8WZY6LBqgTWuD5ZnulbwihftkfKTIB3Whm8ce5xQUngs1Y+RjZrfG8smyl48T2H1768mehhJOOh0r3j6JTuxaJVZ0rv94EGVfnj1FUJLcUl1ZZoZ5cn0nitSrMKx35jSf8k8F6JGBzhZO8cH6blrFNacQyi6cgIc1s1m7asomP4tKpMLM9+rlmqfeviYRaCqTlJjUxfa8qdgEM8MD+Tv62dfMt+3ZpbFYgTFZwUsDEEFob0cupUZ1JncoWVwJdU+o79JRcikDG9WIW38PhauQKm/X61f6BZ6hwP09WsQ9mCoKeoHxrM4zuVx0tXANidq053EYhJpEKg8nekQOfr9PbDOgXGTvaTd0+r9ippK0Q2jEDDdQ4ic79htoOgxinbacD5501Gp/Aur0LxHH3J+5ggbfg5nMYd+BRY2P59Wn2wM5myRUycFO8O+zymY9Ewz2i+fQVdr3acXSDFva0QLqyxUgFt72tRtRo+MLybSyGy4MuNqI=
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=jtaylor32/woogidi-woogidi-woogidi
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO

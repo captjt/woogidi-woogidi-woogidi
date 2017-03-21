@@ -1,0 +1,4 @@
+package: github.com/jtaylor32/woogidi-woogidi-woogidi
+import:
+- package: github.com/go-kit/kit
+  version: v0.4.0
