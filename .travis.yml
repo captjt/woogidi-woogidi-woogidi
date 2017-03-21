@@ -14,7 +14,7 @@ env:
   - secure: 4jAka52PaFr+g6V6+rgMyBKrv8tLbbBJ8peXPY4EK7w1Wy3/54YXDGOk+lQtmw4NPYWMypsqWS8ZpFuu3qc29LyPgUXO2HFT/+c33semD9KcvquzPmFPcx1C81uoKyWLFBWFPoteoqYeUaveJd7WlYjqaKcUGiJVO+ZRJRibbKDD87tHOYWivOXfOB8WZY6LBqgTWuD5ZnulbwihftkfKTIB3Whm8ce5xQUngs1Y+RjZrfG8smyl48T2H1768mehhJOOh0r3j6JTuxaJVZ0rv94EGVfnj1FUJLcUl1ZZoZ5cn0nitSrMKx35jSf8k8F6JGBzhZO8cH6blrFNacQyi6cgIc1s1m7asomP4tKpMLM9+rlmqfeviYRaCqTlJjUxfa8qdgEM8MD+Tv62dfMt+3ZpbFYgTFZwUsDEEFob0cupUZ1JncoWVwJdU+o79JRcikDG9WIW38PhauQKm/X61f6BZ6hwP09WsQ9mCoKeoHxrM4zuVx0tXANidq053EYhJpEKg8nekQOfr9PbDOgXGTvaTd0+r9ippK0Q2jEDDdQ4ic79htoOgxinbacD5501Gp/Aur0LxHH3J+5ggbfg5nMYd+BRY2P59Wn2wM5myRUycFO8O+zymY9Ewz2i+fQVdr3acXSDFva0QLqyxUgFt72tRtRo+MLybSyGy4MuNqI=
   - COMMIT=${TRAVIS_COMMIT::8}
 after_success:
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=$DOCKER_USER/woogidi-woogidi-woogidi
   - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker tag $REPO:$COMMIT $REPO:latest
